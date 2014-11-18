@@ -1,0 +1,29 @@
+Bochs installation
+-------------------
+
+Bochs 2.6.7 was downloaded from SourceForge and compiled with the following
+options:
+
+./configure \
+--enable-x86-64 \
+--enable-e1000 \
+--enable-fast-function-calls \
+--enable-debugger \
+--enable-debugger-gui=no
+
+make
+
+make install
+
+I compiled this on Debian 7 running kernel 3.2.0. I couldn't get the build
+working with debugger GUI, it couldn't find the GTK header despite having
+installed the GTK dev packages.
+
+Bochs configuration
+--------------------
+
+See bochs/bochsrc for configuration details. The default BIOS and VGABIOS
+are being utilized. Nothing fancy for the first-run through.
+
+You will need to export $BXSHARE with the directory where your BIOS images
+are located. For example, on my system it would be /usr/local/share/bochs.
