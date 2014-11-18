@@ -181,7 +181,7 @@
 #  2.2.6 2.6Ghz Intel Core 2 Duo with WinXP/g++ 3.4       21 to 25 Mips
 #  2.2.6 2.1Ghz Athlon XP with Linux 2.6/g++ 3.4          12 to 15 Mips
 #=======================================================================
-cpu: model=core2_penryn_t9600, count=1, ips=50000000, reset_on_triple_fault=1, ignore_bad_msrs=1, msrs="msrs.def"
+cpu: model=corei7_haswell_4770, count=1, ips=90000000, reset_on_triple_fault=1, ignore_bad_msrs=1, msrs="msrs.def"
 cpu: cpuid_limit_winnt=0
 
 #=======================================================================
@@ -346,7 +346,7 @@ cpu: cpuid_limit_winnt=0
 # used all allocated host memory and wants more.
 #
 #=======================================================================
-memory: guest=512, host=256
+memory: guest=256, host=256
 
 #=======================================================================
 # ROMIMAGE:
@@ -614,7 +614,7 @@ private_colormap: enabled=0
 # The optional parameter 'write_protected' can be used to control the media
 # write protect switch. By default it is turned off.
 #=======================================================================
-floppya: 1_44=/dev/fd0, status=inserted
+#floppya: 1_44=/dev/fd0, status=inserted
 #floppya: image=../1.44, status=inserted
 #floppya: 1_44=/dev/fd0H1440, status=inserted
 #floppya: 1_2=../1_2, status=inserted
@@ -746,7 +746,7 @@ floppy_bootsig_check: disabled=0
 #   log: /dev/tty
 #=======================================================================
 #log: /dev/null
-log: bochsout.txt
+log: bochs.log
 
 #=======================================================================
 # LOGPREFIX:
@@ -805,7 +805,7 @@ debug: action=ignore, pci=report # report BX_DEBUG from module 'pci'
 #=======================================================================
 #debugger_log: /dev/null
 #debugger_log: debugger.out
-debugger_log: -
+debugger_log: bochs-debug.log
 
 #=======================================================================
 # COM1, COM2, COM3, COM4:
@@ -856,7 +856,7 @@ debugger_log: -
 #   parport2: enabled=1, file="/dev/lp0"
 #   parport1: enabled=0
 #=======================================================================
-parport1: enabled=1, file="parport.out"
+#parport1: enabled=1, file="parport.out"
 
 #=======================================================================
 # SOUND:
@@ -1106,7 +1106,7 @@ speaker: enabled=1, mode=sound
 # Example:
 #   magic_break: enabled=1
 #=======================================================================
-#magic_break: enabled=1
+magic_break: enabled=1
 
 #=======================================================================
 # DEBUG_SYMBOLS:
