@@ -27,3 +27,9 @@ are being utilized. Nothing fancy for the first-run through.
 
 You will need to export $BXSHARE with the directory where your BIOS images
 are located. For example, on my system it would be /usr/local/share/bochs.
+
+Bochs doesn't supply a disk image to start with, so you will need to create
+one. This can be done using the 'bximage' command. I created a 30M flat disk
+named "hda.img". For size reasons, this file isn't added to the git repo.
+
+
