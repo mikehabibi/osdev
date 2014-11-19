@@ -6,10 +6,16 @@ options:
 
 ./configure \
 --enable-x86-64 \
+--enable-vmx \
+--enable-svm \
+--enable-avx \
+--enable-long-phy-address \
 --enable-e1000 \
 --enable-fast-function-calls \
 --enable-debugger \
---enable-debugger-gui=no
+--enable-debugger-gui \
+--enable-usb \
+--enable-usb-ohci  \
 
 make
 
