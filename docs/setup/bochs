@@ -1,5 +1,10 @@
 Bochs installation
 -------------------
+I compiled this on Debian 7 running kernel 3.2.0. I needed to install the GTK
+2.0 dev libraries in order to get the debugger GUI compiling correctly. The
+configure script doesn't properly detect the lack of GTK dev libraries
+before it starts compiling. Additionally, I needed the readline dev libraries
+as well.
 
 Bochs 2.6.7 was downloaded from SourceForge and compiled with the following
 options:
@@ -20,10 +25,6 @@ options:
 make
 
 make install
-
-I compiled this on Debian 7 running kernel 3.2.0. I couldn't get the build
-working with debugger GUI, it couldn't find the GTK header despite having
-installed the GTK dev packages.
 
 Bochs configuration
 --------------------
