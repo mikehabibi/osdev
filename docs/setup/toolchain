@@ -1,0 +1,156 @@
+In order to build for a simulated x86 environment, a cross-compiler must be
+built that targets this system. Using the host toolchain will generate binaries
+and objects that are intended to run on x86-64 Linux systems, which is
+definitely not what we want. Below are the steps I used to build my own custom
+cross-compiler toolchain.
+
+Note about building GCC
+-----------------------
+Generally speaking, you need to bootstrap your build of GCC. That means you
+use the system compiler to build the latest version, then use the newly-built
+version to build your [hopefully] final compiler. Finally, you can build the
+compiler yet again to validate that the output is the same (sanity check). If
+you simply do the first step (use your system's compile to build your target
+compiler), then your compiler will be slower and buggier than if you used
+the latest GCC release to build itself. Make sense? If not, just agree anyway.
+
+GCC Dependencies
+----------------
+If you have never built a toolchain before, you will likely find it to be a
+pain. It has many dependencies. Here is what I needed, excluding the system
+toolchain that is already installed:
+
+-GCC 4.9.2 (latest stable release as of this writing)
+-binutils 2.24.90
+-GMP 6.0.0.a
+-MSPR 3.1.2
+-MPC 1.0.2
+-ISL 0.12.2
+
+Debian packages installed:
+-tcl
+-expect
+-dejagnu
+-gawk
+-autogen
+
+The rest of GCC's dependencies were already on my Linux distribution, and
+likely will be on yours too (make, tar, gzip, etc).
+
+Compiling the native compiler
+---------------------------------
+These steps will build a system compiler with the latest-and-greatest source
+code. It will not be our final cross-compiler, but rather the compiler we use
+to build that cross-compiler.
+
+Firstly, I want everything to end up in ~/opt/gcc-4.9.2:
+
+  mkdir -p ~/opt/gcc-4.9.2
+  export PREFIX=~/opt/gcc-4.9.2
+
+It should be noted that a lot of these packages do not like to be built from
+inside the source tree. We follow the convention where we build into an outside
+directory.
+
+binutils
+--------
+  tar -xvf binutils-2.24.90.tar.bz2
+  mkdir build-binutils
+  cd build-binutils
+  ../binutils-2.24.90/configure --prefix="$PREFIX" --disable-nls
+  make
+  make install
+
+NOTE: I had to modify gprof/gconfig.h to comment out #define VERSION to get
+the build to work. If you DIDN'T have to do this, please let me know. Curious
+why the standard release build doesn't work on my Debian release. But not
+curious enough to dig into it right now, maybe after I build the
+cross-compiler.
+
+gcc libraries
+-------------
+The four libraries we downloaded can be built with gcc, how convenient. Simply
+extract them into expected directores under the gcc directory:
+
+  tar -xf gcc-4.9.2.tar.gz
+  tar -xf gmp-6.0.0a.tar.xz
+  tar -xf mpc-1.0.2.tar.gz
+  tar -xf mpfr-3.1.2.tar.xz
+  tar -xf isl-0.12.2.tar.bz2
+  mv gmp-6.0.0 gcc-4.9.2/gmp
+  mv mpc-1.0.2 gcc-4.9.2/mpc
+  mv mpfr-3.1.2 gcc-4.9.2/mpfr
+  mv isl-0.12.2 gcc-4.9.2/isl
+
+gcc bootstrap
+-------------
+  mkdir build-gcc
+  cd build-gcc
+  ../gcc-4.9.2/configure \
+  --prefix="$PREFIX"     \
+  --disable-nls          \
+  --enable-languages=c++,c
+  make
+
+At this point, you will have gone through the bootstrapping process, which will
+have built the compiler three times to verify that there are no build issues.
+Now we may optionally run the test suite to validate your compiler. The build
+took a little over two hours.
+
+  make install
+
+Finally! Now our native 4.9.2 toolchain is installed at $PREFIX/bin. We are
+ready to use it to build our cross-compiler now.
+
+Cross-compiler
+--------------
+Now we must rebuild binutils for our target system. First export an updated
+PATH variable so $PREFIX/bin is the first search directory. This is important
+to ensure the newly-built gcc toolchain is used, and not the default system
+toolchain from your distribution.
+
+  export PATH=$PREFIX/bin:$PATH
+
+Next, we update our PREFIX because we want the cross-tools to be built
+elsewhere so they don't get mixed up.
+
+  export PREFIX=~/opt/cross
+
+Now we build an updated binutils:
+
+  mkdir -p build-xbinutils
+  cd build-xbinutils
+  ../binutils-2.24.90/configure   \
+  --target=i686-elf               \
+  --prefix="$PREFIX"              \
+  --with-sysroot                  \
+  --disable-nls                   \
+  --disable-werror
+  make
+  make install
+
+Now we have an updated, targetted version of binutils ready for our cross-
+compiled version of gcc. :$PATH
+
+NOTE: At this point you'll have two new PATH entries, one for the new binutils
+binaries, and another for the original binutils binaries and the 4.9.2 native
+toolchain.
+
+Time to build the cross-compiler!
+
+  mkdir build-xgcc
+  cd build-xgcc
+
+  ../gcc-4.9.2/configure
+  --prefix="$PREFIX"        \
+  --disable-nls             \
+  --enable-languages=c,c++  \
+  --disable-headers         \
+  --target=$TARGET
+
+  make all-gcc
+  make all-target-libgcc
+  make install-gcc
+  make install-target-libgcc
+
+Viola!
