@@ -130,7 +130,7 @@ Now we build an updated binutils:
   make install
 
 Now we have an updated, targetted version of binutils ready for our cross-
-compiled version of gcc. :$PATH
+compiled version of gcc.
 
 NOTE: At this point you'll have two new PATH entries, one for the new binutils
 binaries, and another for the original binutils binaries and the 4.9.2 native
