@@ -116,7 +116,7 @@ elsewhere so they don't get mixed up.
 
   export PREFIX=~/opt/cross
 
-Finally, export TARGET to ensure we are consist between binutils and
+Finally, export TARGET to ensure we are consistent between binutils and
 gcc.
 
   export TARGET=i686-elf
