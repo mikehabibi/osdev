@@ -116,12 +116,17 @@ elsewhere so they don't get mixed up.
 
   export PREFIX=~/opt/cross
 
+Finally, export TARGET to ensure we are consist between binutils and
+gcc.
+
+  export TARGET=i686-elf
+
 Now we build an updated binutils:
 
   mkdir -p build-xbinutils
   cd build-xbinutils
   ../binutils-2.24.90/configure   \
-  --target=i686-elf               \
+  --target=$TARGET
   --prefix="$PREFIX"              \
   --with-sysroot                  \
   --disable-nls                   \
@@ -153,4 +158,4 @@ Time to build the cross-compiler!
   make install-gcc
   make install-target-libgcc
 
-Viola!
+Voilà!
