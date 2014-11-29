@@ -1,2 +1,5 @@
 hda.img
 *.log
+*.o
+*.d
+*.s
