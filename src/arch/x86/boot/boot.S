@@ -45,5 +45,5 @@ _start:
 
 .size .start, (. - _start)
 
-
+#undef ASM_FILE
 
