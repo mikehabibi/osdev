@@ -17,13 +17,20 @@ CPP   := $(CROSS)cpp
 
 # Common compilation flags
 CFLAGS   += -nostdlib -lgcc -std=gnu99 -MMD -ffreestanding -Wall -Werror
+#CFLAGS   += -v
 LDFLAGS  += -nostdlib -lgcc
 ASFLAGS  += $(CFLAGS)
 
 #######
 # Rules
 #######
-SRCDIRS := arch/$(ARCH)
+.PHONY: all clean depclean superclean
+
+# Default rule 'all' comes before everything!
+all: $(OS_IMAGE)
+	@echo "Successfully built kernel."
+
+SRCDIRS := arch/$(ARCH) kernel
 
 #SRCS := $(shell find $(SRCDIRS) -type f -name "*.c" -o -name "*.S")
 #HDRS := $(shell find $(SRCDIRS) -type f -name "*.h")
@@ -45,10 +52,6 @@ $(info SRCS=$(SRCS))
 $(info HDRS=$(HDRS))
 $(info OBJS=$(OBJS))
 $(info DEPS=$(DEPS))
-
-.PHONY: all clean depclean superclean
-all: $(OS_IMAGE)
-	@echo "Successfully built kernel."
 
 $(OS_IMAGE): $(OBJS)
 	$(CC) -T kernel.ld $(CFLAGS) $^ -o $@
@@ -79,5 +82,5 @@ superclean: depclean clean
 #	@echo ASFLAGS = $(ASFLAGS)
 #	@echo $(@D)_ASFLAGS = $($(@D)_ASFLAGS)
 #	@echo $@_ASFLAGS = $($@_ASFLAGS)
-	$(CC) $(ASFLAGS) $($(@D)_ASFLAGS) $($@_ASFLAGS) -o $@ $<
+	$(CC) $(ASFLAGS) $($(@D)_ASFLAGS) $($@_ASFLAGS) -o $@ -c $<
 
