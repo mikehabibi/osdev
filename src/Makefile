@@ -21,10 +21,12 @@ CFLAGS   += -nostdlib -lgcc -std=gnu99 -MMD -ffreestanding -Wall -Werror
 LDFLAGS  += -nostdlib -lgcc
 ASFLAGS  += $(CFLAGS)
 
+ROOTDIR  := $(CURDIR)
+
 #######
 # Rules
 #######
-.PHONY: all clean depclean superclean
+.PHONY: all iso clean depclean superclean
 
 # Default rule 'all' comes before everything!
 all: $(OS_IMAGE)
@@ -63,6 +65,9 @@ depclean:
 	rm -rf $(DEPS)
 
 superclean: depclean clean
+
+iso: $(OS_IMAGE)
+	@tools/makeiso.sh $(OS_IMAGE) iso
 
 ####################
 # EXPLICIT RULES
