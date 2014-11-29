@@ -1,5 +1,4 @@
 # x86 arch Makefile
-$(info CWD=$(CWD))
 SRCS +=
 HDRS +=
 

@@ -47,17 +47,17 @@ DEPS := $(patsubst %.o,%.d,$(OBJS))
 # Include dependency files
 -include $(DEPS)
 
-$(info DIRS=$(SRCDIRS))
-$(info SRCS=$(SRCS))
-$(info HDRS=$(HDRS))
-$(info OBJS=$(OBJS))
-$(info DEPS=$(DEPS))
+#$(info DIRS=$(SRCDIRS))
+#$(info SRCS=$(SRCS))
+#$(info HDRS=$(HDRS))
+#$(info OBJS=$(OBJS))
+#$(info DEPS=$(DEPS))
 
 $(OS_IMAGE): $(OBJS)
 	$(CC) -T kernel.ld $(CFLAGS) $^ -o $@
 
 clean:
-	rm -rf $(OBJS) $(CLEAN)
+	rm -rf $(OS_IMAGE) $(OBJS) $(CLEAN)
 
 depclean:
 	rm -rf $(DEPS)

@@ -1,4 +1,3 @@
-$(info CWD=$(CWD))
 SRCS += $(CWD)/boot.S
 HDRS += $(CWD)/multiboot.h
 
