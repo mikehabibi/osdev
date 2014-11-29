@@ -3,3 +3,4 @@ hda.img
 *.o
 *.d
 *.s
+*.bin
