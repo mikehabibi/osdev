@@ -16,7 +16,12 @@ AS    := $(CROSS)as
 CPP   := $(CROSS)cpp
 
 # Common compilation flags
-CFLAGS   += -nostdlib -lgcc -std=gnu99 -MMD -ffreestanding -Wall -Werror
+CFLAGS   += -nostdlib -lgcc -std=gnu99 -MMD -ffreestanding
+CFLAGS   += -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith \
+            -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations \
+            -Wredundant-decls -Wnested-externs -Winline -Wno-long-long \
+            -Wuninitialized -Wstrict-prototypes -Wcast-align
+#CFLAGS   += -Wconversion
 #CFLAGS   += -v
 LDFLAGS  += -nostdlib -lgcc
 ASFLAGS  += $(CFLAGS)
