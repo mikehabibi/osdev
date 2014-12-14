@@ -26,4 +26,8 @@ menuentry "osdev" {
   multiboot /boot/$os_image
 }
 EOF
+
+# First remove existing ISO, it can't handle existing ISOs well
+rm -f $iso_dir/cdrom.iso
+
 grub-mkrescue -o $iso_dir/cdrom.iso $iso_dir
