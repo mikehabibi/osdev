@@ -16,7 +16,10 @@ AS    := $(CROSS)as
 CPP   := $(CROSS)cpp
 
 # Common compilation flags
+ROOTDIR  := $(CURDIR)
+
 CFLAGS   += -nostdlib -lgcc -std=gnu99 -MMD -ffreestanding
+CFLAGS   += -I$(ROOTDIR)/include
 CFLAGS   += -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith \
             -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations \
             -Wredundant-decls -Wnested-externs -Winline -Wno-long-long \
@@ -25,8 +28,6 @@ CFLAGS   += -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith \
 #CFLAGS   += -v
 LDFLAGS  += -nostdlib -lgcc
 ASFLAGS  += $(CFLAGS)
-
-ROOTDIR  := $(CURDIR)
 
 #######
 # Rules
@@ -37,7 +38,7 @@ ROOTDIR  := $(CURDIR)
 all: $(OS_IMAGE)
 	@echo "Successfully built kernel."
 
-SRCDIRS := arch/$(ARCH) kernel
+SRCDIRS := arch/$(ARCH) kernel drivers
 
 #SRCS := $(shell find $(SRCDIRS) -type f -name "*.c" -o -name "*.S")
 #HDRS := $(shell find $(SRCDIRS) -type f -name "*.h")
