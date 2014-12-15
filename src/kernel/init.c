@@ -5,6 +5,7 @@
  * setup a 16KB stack from our bootstrap.
  */
 
+#include <kernel/kernel.h>
 #include <vga/vga_text.h>
 
 void kernel_main(void);
@@ -13,6 +14,7 @@ void kernel_main(void)
 {
   vga_text_init();
 
-  vga_text_writestring("Welcome to osdev kernel!");
+  printf("Welcome to the kernel!\n");
+  printk("This is a test of printk %s...\n", "functionality");
   return;
 }

@@ -1,0 +1,23 @@
+libc
+----
+Libc contains general functions that aren't necessarily tied to the kernel,
+and can also be used (with perhaps different implementations) in userspace.
+Most people are familiar with libc calls, functions such as printf, strlen,
+etc.
+
+My libc implementation can be compiled in either kernel-space or user-space
+mode. The kernel builds libc for itself to use in kernel-space mode. The
+user-space version of libc can be built for applications with a separate make
+target (check the Makefile for the latest target).
+
+Kernel-space
+------------
+The kernel-space variant builds the library with the assumption that it will
+not be running in user-space. This is an important distinction, because when
+it's in kernel-space it ha access to privileged calls and drivers directly,
+whereas user-space applications will likely need to make system calls to run
+certain things in the kernel. Most of this behavior is still TBD as of this
+writing.
+
+There are some functions, such as printk, which are only built for the kernel
+variant.

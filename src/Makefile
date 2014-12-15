@@ -15,15 +15,18 @@ LD    := $(CROSS)ld
 AS    := $(CROSS)as
 CPP   := $(CROSS)cpp
 
-# Common compilation flags
+# Common compilation flags (for kernel builds)
 ROOTDIR  := $(CURDIR)
 
 CFLAGS   += -nostdlib -lgcc -std=gnu99 -MMD -ffreestanding
 CFLAGS   += -I$(ROOTDIR)/include
+CFLAGS   += -I$(ROOTDIR)/libc/include
 CFLAGS   += -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith \
             -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations \
             -Wredundant-decls -Wnested-externs -Winline -Wno-long-long \
             -Wuninitialized -Wstrict-prototypes -Wcast-align
+# Used to indicate that we are compiling kernel code, not userspace code
+CFLAGS   += -D__KERNEL
 #CFLAGS   += -Wconversion
 #CFLAGS   += -v
 LDFLAGS  += -nostdlib -lgcc
@@ -38,7 +41,7 @@ ASFLAGS  += $(CFLAGS)
 all: $(OS_IMAGE)
 	@echo "Successfully built kernel."
 
-SRCDIRS := arch/$(ARCH) kernel drivers
+SRCDIRS := arch/$(ARCH) kernel drivers libc
 
 #SRCS := $(shell find $(SRCDIRS) -type f -name "*.c" -o -name "*.S")
 #HDRS := $(shell find $(SRCDIRS) -type f -name "*.h")
