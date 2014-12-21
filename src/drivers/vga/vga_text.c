@@ -35,7 +35,14 @@ void vga_text_init(void)
 /* Add a character to the current cursor location */
 void vga_text_putc(char c)
 {
-  vga_buf[current_row * VGA_WIDTH + current_column++] = make_vga_entry(c, default_color);
+  if (c == '\n')
+  {
+    current_column = VGA_WIDTH; /* trick a new line wrap */
+  }
+  else
+  {
+    vga_buf[current_row * VGA_WIDTH + current_column++] = make_vga_entry(c, default_color);
+  }
 
   if (current_column >= VGA_WIDTH) 
   {
