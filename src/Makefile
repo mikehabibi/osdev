@@ -170,7 +170,7 @@ cscope:
 	@echo -en .
 	@find . -name "*.h" >> cscope.files
 	@echo -en .
-	
+	@find . -name "*.S" >> cscope.files
 	@echo -en .
 	@find . -name "*.mk" >> cscope.files
 	@echo -en .
