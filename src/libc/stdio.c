@@ -86,6 +86,63 @@ incomprehensible_conversion:
       char c = (char) va_arg(parameters, int /* char promotes to int */);
       print(&c, sizeof(c));
     }
+    else if ( *format == 'd' )
+    {
+      format++;
+      char str[11]; /* max int size is 10 digits */
+      char *strptr = str;
+      int val = va_arg(parameters, int);
+      int temp;
+      /* brute force for now
+       * TODO: make this more intelligent */
+      temp = val / 1000000000;
+      str[0] = '0' + temp;
+      val -= (temp * 1000000000);
+
+      temp = val / 100000000;
+      str[1] = '0' + temp;
+      val -= (temp * 100000000);
+
+      temp = val / 10000000;
+      str[2] = '0' + temp;
+      val -= (temp * 10000000);
+
+      temp = val / 1000000;
+      str[3] = '0' + temp;
+      val -= (temp * 1000000);
+
+      temp = val / 100000;
+      str[4] = '0' + temp;
+      val -= (temp * 100000);
+
+      temp = val / 10000;
+      str[5] = '0' + temp;
+      val -= (temp * 10000);
+
+      temp = val / 1000;
+      str[6] = '0' + temp;
+      val -= (temp * 1000);
+
+      temp = val / 100;
+      str[7] = '0' + temp;
+      val -= (temp * 100);
+
+      temp = val / 10;
+      str[8] = '0' + temp;
+      val -= (temp * 10);
+
+      temp = val / 1;
+      str[9] = '0' + temp;
+      val -= (temp * 1);
+
+      str[10] = 0;
+
+      /* remove leading zeroes */
+      while (*strptr == '0')
+        strptr++;
+
+      print(strptr, strlen(strptr));
+    }
     else if ( *format == 's' )
     {
       format++;

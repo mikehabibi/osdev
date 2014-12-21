@@ -3,6 +3,8 @@
  * Common macros for the kernel
  */
 
+#pragma once
+
 #include <stdio.h>
 
 #define printk(...) { \
