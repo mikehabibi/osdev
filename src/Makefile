@@ -42,6 +42,7 @@ ROOTDIR  := $(CURDIR)
 
 CFLAGS   += -nostdlib -lgcc -std=gnu99 -MMD -ffreestanding
 CFLAGS   += -I$(ROOTDIR)/include
+CFLAGS   += -I$(ROOTDIR)/include/arch/$(ARCH)
 CFLAGS   += -I$(ROOTDIR)/libc/include
 CFLAGS   += -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith \
             -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations \

@@ -10,7 +10,7 @@
 #define ASM_FILE 1
 #include <multiboot.h>
 
-#define MULTIBOOT_HEADER_FLAGS    0x00000003 /* mem map and align */
+#define MULTIBOOT_HEADER_FLAGS    MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO /* mem map and align */
 
 #define STACK_SIZE                0x00004000 /* 16KB */
 
@@ -35,6 +35,9 @@ _start:
         movl    $stack_top, %esp
 
         # Now that the stack is setup, we can transition to C
+        # args = eax (magic number) and ebx (multiboot info structure)
+        push    %eax
+        push    %ebx
         call    kernel_main
 
         # If we ever exit this, then we need to just halt the processor

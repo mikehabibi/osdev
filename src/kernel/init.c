@@ -7,14 +7,36 @@
 
 #include <kernel/kernel.h>
 #include <vga/vga_text.h>
+#include <bios.h>
+#include <multiboot.h>
 
-void kernel_main(void);
+void kernel_main(multiboot_info_t *mbi, unsigned int magic);
 
-void kernel_main(void)
+void kernel_main(multiboot_info_t *mbi, unsigned int magic)
 {
   vga_text_init();
 
   printf("Welcome to the kernel!\n");
-  printk("This is a test of printk %s...\n", "functionality");
+  printk("Grabbing memory map from BIOS...\n");
+
+  if (magic == MULTIBOOT_BOOTLOADER_MAGIC)
+  {
+    /* booted by GRUB or multiboot-compliant bootloader.
+     * mbi is valid
+     */
+    printk("Multiboot-compliant!\n");
+    printk("flags = %d\n", mbi->flags);
+    printk("mem_lower = %d\n", mbi->mem_lower);
+    printk("mem_upper = %d\n", mbi->mem_upper);
+  }
+  else
+  {
+    printk("NOT Multiboot-compliant!");
+    /* BOCHS_TRAP;
+    ret = bios_detect_memory();
+    printk("Ret = %d\n", ret);
+    */
+  }
+
   return;
 }
